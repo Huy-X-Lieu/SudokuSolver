@@ -1,0 +1,14 @@
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\bin\Debug\net8.0\OOPSudokuSolver.exe
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\bin\Debug\net8.0\OOPSudokuSolver.deps.json
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\bin\Debug\net8.0\OOPSudokuSolver.runtimeconfig.json
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\bin\Debug\net8.0\OOPSudokuSolver.dll
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\bin\Debug\net8.0\OOPSudokuSolver.pdb
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.GeneratedMSBuildEditorConfig.editorconfig
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.AssemblyInfoInputs.cache
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.AssemblyInfo.cs
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.csproj.CoreCompileInputs.cache
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.dll
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\refint\OOPSudokuSolver.dll
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.pdb
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\OOPSudokuSolver.genruntimeconfig.cache
+D:\code\CSharp\OOPSudokuSolver\OOPSudokuSolver\obj\Debug\net8.0\ref\OOPSudokuSolver.dll
