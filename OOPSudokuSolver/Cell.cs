@@ -6,32 +6,65 @@ public class Cell
     
     private delegate void SetPossibilitiesHandler(int pos);
 
-    public event SetResultHandler resultSet;
+    public event SetResultHandler ResultSetResultHandler;
 
-    private event SetPossibilitiesHandler possibilitySet;
+    private event SetPossibilitiesHandler PossibilitySetPossibilitiesHandler;
     
     private int _value;
-    private List<int> posibilities;
+    private List<int> _possibilities;
+    private int _row;
+    private int _column;
+    private int _square;
 
     public int Value
     {
         get => _value;
+        
         set
         {
+            /*
+             * Assign given value to Value,
+             * if the given value is different from 0,
+             * set that value as solution of the cell
+             *
+             * If the solution is found,
+             * send signal to the ResultSet handler.
+             * It will remove all remaining possibilities of the cell
+             */
             if(value > 0)
             {
                 _value = value;
-                resultSet?.Invoke();
+                ResultSetResultHandler?.Invoke();
             }
         }
+    }
+    public int Row
+    {
+        get => _row;
+        set => _row = value;
+    }
+    public int Column
+    {
+        get => _column;
+        set => _column = value;
+    }
+    public int Square
+    {
+        get => _square;
+        set => _square = value;
     }
 
     
 
+    /**
+     * Initialize a cell with:
+     * - 0 as default value
+     * - [1, 2, 3, 4, 5, 6, 7, 8, 9] as possibilities
+     */
     public Cell()
     {
         _value = 0;
-        posibilities = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        _possibilities = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         SetUpHandlers();
     }
 
@@ -46,7 +79,7 @@ public class Cell
     /**
      * Return if a cell is already answered
      */
-    public bool isResult()
+    public bool IsResult()
     {
         return _value > 0;
     }
@@ -56,13 +89,13 @@ public class Cell
      */
     private void RemoveAllPossibilities()
     {
-        posibilities.Clear();
+        _possibilities.Clear();
     }
 
     private void SetUpHandlers()
     {
-        resultSet += RemoveAllPossibilities;
-        possibilitySet += SetValue;
+        ResultSetResultHandler += RemoveAllPossibilities;
+        PossibilitySetPossibilitiesHandler += SetPossibilitiesHandlerValue;
     }
 
 
@@ -71,7 +104,7 @@ public class Cell
      */
     public List<int> GetPossibilities()
     {
-        return posibilities;
+        return _possibilities;
     }
 
     /**
@@ -79,7 +112,7 @@ public class Cell
      */
     public void AddPossibility(int pos)
     {
-        posibilities.Add(pos);
+        _possibilities.Add(pos);
     }
 
     /**
@@ -87,10 +120,10 @@ public class Cell
      */
     private void RemovePossibility(int pos)
     {
-        posibilities.Remove(pos);
-        if (posibilities.Count == 1)
+        _possibilities.Remove(pos);
+        if (_possibilities.Count == 1)
         {
-            possibilitySet?.Invoke(posibilities[0]);
+            PossibilitySetPossibilitiesHandler?.Invoke(_possibilities[0]);
         }
     }
     
@@ -109,8 +142,12 @@ public class Cell
     /**
      * Set the answer of a cell
      */
-    private void SetValue(int value)
-    {
-        Value = value;
-    }
+    private void SetPossibilitiesHandlerValue(int value)
+        => Value = value;
+
+    /**
+     * Return if the current cell contains the given possibility
+     */
+    public bool ContainPossibility(int pos)
+        => _possibilities.Contains(pos);
 }

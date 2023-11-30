@@ -36,7 +36,7 @@ public class Table
             for (int j = 0; j < 9; j++)
             {
                 table[i,j] = new Cell();
-                table[i,j].resultSet += OnResultSet;
+                table[i,j].ResultSetResultHandler += OnResultSetResultHandler;
             }
         }
 
@@ -147,7 +147,7 @@ public class Table
         List<int> values = GetAllValuesOfARow(rowIndex);
         for (int i = 0; i < 9; i++)
         {
-            if (table[rowIndex, i].isResult() == false)
+            if (table[rowIndex, i].IsResult() == false)
             {
                 table[rowIndex,i].RemovePossibilities(values);
             }
@@ -162,7 +162,7 @@ public class Table
         List<int> values = GetAllValuesOfAColumn(colIndex);
         for (int i = 0; i < 9; i++)
         {
-            if (table[i,colIndex].isResult() == false)
+            if (table[i,colIndex].IsResult() == false)
             {
                 table[i,colIndex].RemovePossibilities(values);
             }
@@ -179,7 +179,7 @@ public class Table
         {
             for (int col = 0; col <= 2; col++)
             {
-                if (table[(3 * (squareIndex / 3) + row), (3 * (squareIndex % 3) + col)].isResult() == false)
+                if (table[(3 * (squareIndex / 3) + row), (3 * (squareIndex % 3) + col)].IsResult() == false)
                 {
                     table[(3 * (squareIndex / 3) + row), (3 * (squareIndex % 3) + col)].RemovePossibilities(values);
                 }
@@ -207,7 +207,7 @@ public class Table
     /**
      * Increases number of solved cells by 1 each time a cell is solved
      */
-    private void OnResultSet()
+    private void OnResultSetResultHandler()
     {
         NumSolves++;
     }
