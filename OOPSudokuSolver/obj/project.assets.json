@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\huyxu\\.nuget\\packages\\": {}
+    "/Users/huylieu/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\code\\CSharp\\OOPSudokuSolver\\OOPSudokuSolver\\OOPSudokuSolver.csproj",
+      "projectUniqueName": "/Volumes/E/CSharp/SudokuSolver/OOPSudokuSolver/OOPSudokuSolver.csproj",
       "projectName": "OOPSudokuSolver",
-      "projectPath": "D:\\code\\CSharp\\OOPSudokuSolver\\OOPSudokuSolver\\OOPSudokuSolver.csproj",
-      "packagesPath": "C:\\Users\\huyxu\\.nuget\\packages\\",
-      "outputPath": "D:\\code\\CSharp\\OOPSudokuSolver\\OOPSudokuSolver\\obj\\",
+      "projectPath": "/Volumes/E/CSharp/SudokuSolver/OOPSudokuSolver/OOPSudokuSolver.csproj",
+      "packagesPath": "/Users/huylieu/.nuget/packages/",
+      "outputPath": "/Volumes/E/CSharp/SudokuSolver/OOPSudokuSolver/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\huyxu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/huylieu/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.2.23502.2/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

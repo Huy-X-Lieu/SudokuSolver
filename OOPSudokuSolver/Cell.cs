@@ -1,12 +1,12 @@
 ﻿namespace OOPSudokuSolver;
 
+public delegate void SetResultHandler();
 public class Cell
 {
-    private delegate void SetResultHandler();
-
+    
     private delegate void SetPossibilitiesHandler(int pos);
 
-    private event SetResultHandler resultSet;
+    public event SetResultHandler resultSet;
 
     private event SetPossibilitiesHandler possibilitySet;
     
@@ -43,11 +43,17 @@ public class Cell
         }
     }
 
+    /**
+     * Return if a cell is already answered
+     */
     public bool isResult()
     {
         return _value > 0;
     }
 
+    /**
+     * Remove all possibilities when found the answer of a cell
+     */
     private void RemoveAllPossibilities()
     {
         posibilities.Clear();
@@ -60,17 +66,26 @@ public class Cell
     }
 
 
+    /**
+     * Return A list of all possibilities
+     */
     public List<int> GetPossibilities()
     {
         return posibilities;
     }
 
+    /**
+     * Add a possibility to possibilities list
+     */
     public void AddPossibility(int pos)
     {
         posibilities.Add(pos);
     }
 
-    public void RemovePossibility(int pos)
+    /**
+     * Remove a given possibility
+     */
+    private void RemovePossibility(int pos)
     {
         posibilities.Remove(pos);
         if (posibilities.Count == 1)
@@ -78,7 +93,11 @@ public class Cell
             possibilitySet?.Invoke(posibilities[0]);
         }
     }
+    
 
+    /**
+     * remove possibilities in the given list
+     */
     public void RemovePossibilities(List<int> poslist)
     {
         foreach (var pos in poslist)
@@ -87,6 +106,9 @@ public class Cell
         }
     }
 
+    /**
+     * Set the answer of a cell
+     */
     private void SetValue(int value)
     {
         Value = value;

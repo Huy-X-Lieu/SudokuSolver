@@ -1,55 +1,82 @@
-﻿using System.Text;
+﻿using System.Data;
+using System.Text;
 
 namespace OOPSudokuSolver;
 
 public class Table
 {
+    private delegate void ResultUpdatedHandler();
+
+    private event ResultUpdatedHandler puzzleUpdated;
     
     
     private Cell[,]? table;
-    private int NumSolves = 0;
+    private int _numSolves = 0;
+
+    private int NumSolves
+    {
+        get => _numSolves;
+        set
+        {
+            _numSolves = value;
+            if (_numSolves == 81)
+            {
+                puzzleUpdated.Invoke();
+            }
+        }
+    }
+
+    private bool isSolved = false;
 
     public Table()
     {
-        table = new Cell[9, 9];
+        table = new Cell[9,9];
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
             {
-                table[i, j] = new Cell();
+                table[i,j] = new Cell();
+                table[i,j].resultSet += OnResultSet;
             }
         }
+
+        puzzleUpdated += NotifyWhenPuzzleIsSolved;
+        NumSolves = 0;
     }
     
-    public Table(int[,] inputs)
+    /**
+     * Add a 2D array of type int to the table
+     */
+    public void AddInputToTable(int[,] inputs)
     {
-        table = new Cell[9, 9];
         for (int row = 0; row < 9; row++)
         {
             for (int col = 0; col < 9; col++)
             {
-                table[row, col] = new Cell(inputs[row,col]);
                 if (inputs[row,col] > 0)
                 {
-                    NumSolves++;
+                    table[row, col].Value = inputs[row,col];
                 }
+
             }
         }
     }
+    
 
-    private void NarrowDownPossibilities()
+    /**
+     * Solve the puzzle
+     */
+    public void Solve()
     {
-        
-    }
-
-    private void Solve(int rowIndex)
-    {
-        for (int i = 0; i < 9; i++)
+        while (isSolved == false)
         {
-            
+            EliminateImpossiblePossibilities();
         }
     }
 
+    /**
+     * Return all values of filled cells on a given row
+     */
     private List<int> GetAllValuesOfARow(int rowIndex)
     {
         HashSet<int> values = new HashSet<int>();
@@ -58,32 +85,66 @@ public class Table
             values.Add(table[rowIndex, i].Value);
         }
 
+        values.Remove(0);
         return values.ToList();
     }
 
+    /**
+     * Return all values of filled cells on a given column
+     */
     private List<int> GetAllValuesOfAColumn(int colIndex)
     {
-        HashSet<int> result = new HashSet<int>();
+        HashSet<int> values = new HashSet<int>();
         for (int i = 0; i < 9; i++)
         {
-            result.Add(table[colIndex, i].Value);
+            {
+                values.Add(table[i, colIndex].Value);
+            }
         }
 
-        return result.ToList();
+        values.Remove(0);
+
+        return values.ToList();
+    }
+    
+    /**
+     * Return all values of filled cells in a given square
+     */
+    private List<int> GetAllValuesOfASquare(int squareIndex)
+    {
+        HashSet<int> values = new HashSet<int>();
+        for (int row = 0; row <= 2; row++)
+        {
+            for (int col = 0; col <= 2; col++)
+            {
+                values.Add(table[(3 * (squareIndex / 3) + row), (3 * (squareIndex % 3) + col)].Value);
+            }
+        }
+
+        values.Remove(0);
+        return values.ToList();
     }
 
+    /**
+     * Remove all IMPOSSIBLE possibility in each cell
+     */
     private void EliminateImpossiblePossibilities()
     {
         for (int i = 0; i < 9; i++)
         {
+            EliminateImpossiblePossibilitiesInASquare(i);
             EliminateImpossiblePossibilitiesInARow(i);
             EliminateImpossiblePossibilitiesInAColumn(i);
         }
     }
+    
 
+    /**
+     * Remove all IMPOSSIBLE possibility in each cell on the given row
+     */
     private void EliminateImpossiblePossibilitiesInARow(int rowIndex)
     {
-        List<int> values = GetAllValuesOfAColumn(rowIndex);
+        List<int> values = GetAllValuesOfARow(rowIndex);
         for (int i = 0; i < 9; i++)
         {
             if (table[rowIndex, i].isResult() == false)
@@ -93,6 +154,9 @@ public class Table
         }
     }
     
+    /**
+     * Remove all IMPOSSIBLE possibility in each cell on the given column
+     */
     private void EliminateImpossiblePossibilitiesInAColumn(int colIndex)
     {
         List<int> values = GetAllValuesOfAColumn(colIndex);
@@ -101,6 +165,24 @@ public class Table
             if (table[i,colIndex].isResult() == false)
             {
                 table[i,colIndex].RemovePossibilities(values);
+            }
+        }
+    }
+    
+    /**
+     * Remove all IMPOSSIBLE possibility in each cell in the given square
+     */
+    private void EliminateImpossiblePossibilitiesInASquare(int squareIndex)
+    {
+        List<int> values = GetAllValuesOfASquare(squareIndex);
+        for (int row = 0; row <= 2; row++)
+        {
+            for (int col = 0; col <= 2; col++)
+            {
+                if (table[(3 * (squareIndex / 3) + row), (3 * (squareIndex % 3) + col)].isResult() == false)
+                {
+                    table[(3 * (squareIndex / 3) + row), (3 * (squareIndex % 3) + col)].RemovePossibilities(values);
+                }
             }
         }
     }
@@ -116,9 +198,33 @@ public class Table
                 result.Append(table[row, col].Value + "  ");
             }
 
-            result.Append('\n');
+            result.Append("\n");
         }
 
         return result.ToString();
+    }
+
+    /**
+     * Increases number of solved cells by 1 each time a cell is solved
+     */
+    private void OnResultSet()
+    {
+        NumSolves++;
+    }
+
+    /**
+     * Signal when the puzzle is solved
+     */
+    private void NotifyWhenPuzzleIsSolved()
+    {
+        isSolved = true;
+    }
+
+    /**
+     * displays number of solved cells
+     */
+    public void PrintNumSolves()
+    {
+        Console.WriteLine(NumSolves);
     }
 }
